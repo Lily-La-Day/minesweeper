@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  /* font-size: 32pt; */
+  font-family: 'Roboto Mono', monospace;
+}
+
+h2 {
+  margin-left: 50px
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div.grid {
+  margin: 50px;
+  width: 360px;
+  height: 360px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+div.grid-item {
+  width: 40px;
+  height: 40px;
+  background-color: grey;
+  border: 1px solid white;
+}
