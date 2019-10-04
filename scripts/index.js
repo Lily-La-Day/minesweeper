@@ -1,15 +1,14 @@
 class Game {
-  constructor(level, squares, grid, bombNumber, width) {
-    // this.bombs = bombs,
-    // this.player = player,
+  constructor(level, squares, grid, bombNumber, width, bombs) {
+    this.bombs = bombs,
     this.level = level,
     this.squares = squares,
     this.grid = grid,
     this.bombNumber = bombNumber,
     this.width = width,
-    
+
     this.makeGrid = function() {
-      console.log(width)
+      console.log(this.width)
       for(let i = 0; i < this.width * this.width ; i ++ ) {
         this.grid =   document.querySelector('.grid')
         const square = document.createElement('div')
@@ -23,7 +22,7 @@ class Game {
 
   }
 
-  bombs() {
+  setLevel() {
     switch(this.level) {
       case 1:
         this.width = 9
@@ -40,6 +39,19 @@ class Game {
     }
 
   }
+
+  placeBombs(){
+    let indexArray = []
+    for(let i = 0; i < this.bombNumber; i ++){
+      const random = Math.floor(Math.random() * (this.width * this.width)-1)
+      console.log(random)
+      indexArray.includes(random) ? indexArray : indexArray = indexArray.concat(random)
+      indexArray.map(el => document.querySelector(`[data-index="${el}"]`).classList.add('bomb'))
+    }
+
+  }
+
+
 
 
 
@@ -59,9 +71,9 @@ const mineSweeper = new Game(1, [])
 
 
 const init = () =>{
-  mineSweeper.bombs()
-
+  mineSweeper.setLevel()
   mineSweeper.makeGrid()
+  mineSweeper.placeBombs()
 
 }
 
