@@ -42,7 +42,7 @@ class Game {
 
   placeBombs(){
     let indexArray = []
-    for(let i = 0; i < this.bombNumber; i ++){
+    while(indexArray.length < this.bombNumber){
       const random = Math.floor(Math.random() * (this.width * this.width)-1)
       console.log(random)
       indexArray.includes(random) ? indexArray : indexArray = indexArray.concat(random)
