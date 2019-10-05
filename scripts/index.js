@@ -43,19 +43,40 @@ class Game {
   placeBombs(){
     let indexArray = []
     while(indexArray.length < this.bombNumber){
-      const random = Math.floor(Math.random() * (this.width * this.width)-1)
+      const random = Math.floor(Math.random() * (this.width * this.width))
       console.log(random)
       indexArray.includes(random) ? indexArray : indexArray = indexArray.concat(random)
       indexArray.map(el => document.querySelector(`[data-index="${el}"]`).classList.add('bomb'))
     }
 
+    console.log(this.placeNumbers(indexArray))
+
+
+
   }
 
+  placeNumbers(indexArray){
+    console.log(indexArray)
+    const flagArray = indexArray.reduce((acc, el) => acc = acc.concat(el +1).concat(el - 1).concat(el + 9).concat(el - 9), [])
 
-
-
+    const flagOb = flagArray.reduce((acc, el) => {
+      if(el in acc) {
+        acc[el] ++
+      } else {
+        acc[el] = 1
+      }
+      return acc
+    }, {})
+    Object.keys(flagOb).map(el => document.querySelector(`[data-index="${el}"]`).innerText = `${flagOb[el]}`)
+  }
 
 }
+
+
+
+
+
+
 
 
 
