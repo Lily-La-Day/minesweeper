@@ -1,11 +1,13 @@
 class Game {
-  constructor(level, squares, grid, bombNumber, width, bombs) {
-    this.bombs = bombs,
+  constructor(level, squares, grid, bombNumber, width) {
+    this.bombs = document.querySelectorAll('.bomb'),
     this.level = level,
     this.squares = squares,
     this.grid = grid,
     this.bombNumber = bombNumber,
     this.width = width,
+    this.playing = true
+
 
     this.makeGrid = function() {
       console.log(this.width)
@@ -49,7 +51,8 @@ class Game {
       indexArray.map(el => document.querySelector(`[data-index="${el}"]`).classList.add('bomb'))
     }
 
-    console.log(this.placeNumbers(indexArray))
+    this.placeNumbers(indexArray)
+    console.log(this.gridSquares)
 
 
 
@@ -57,7 +60,7 @@ class Game {
 
   placeNumbers(indexArray){
     console.log(indexArray)
-    const flagArray = indexArray.reduce((acc, el) => acc = acc.concat(el +1).concat(el - 1).concat(el + 9).concat(el - 9), [])
+    const flagArray = indexArray.reduce((acc, el) => acc = acc.concat(el +1).concat(el - 1).concat(el + 9).concat(el - 9), []).filter(el => el > -1 && el < 81)
 
     const flagOb = flagArray.reduce((acc, el) => {
       if(el in acc) {
@@ -68,6 +71,18 @@ class Game {
       return acc
     }, {})
     Object.keys(flagOb).map(el => document.querySelector(`[data-index="${el}"]`).innerText = `${flagOb[el]}`)
+  }
+
+
+  loseFunc(e) {
+    console.log('you lose')
+    return e.target.classList.contains('bomb') ? this.playing = false : this.playing
+
+  }
+
+  addListener(){
+    this.gridSquares = document.querySelectorAll('.grid-item')
+    this.gridSquares.forEach(el => el.addEventListener('click', this.loseFunc))
   }
 
 }
@@ -95,6 +110,9 @@ const init = () =>{
   mineSweeper.setLevel()
   mineSweeper.makeGrid()
   mineSweeper.placeBombs()
+  mineSweeper.addListener()
+
+
 
 }
 
