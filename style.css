@@ -36,5 +36,9 @@ div.grid-item {
 }
 
 div.bomb {
-  background-color: red;
+  /* background-color: red; */
+}
+
+div.clear {
+  background-color: lightgrey;
 }

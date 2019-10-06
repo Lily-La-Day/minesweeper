@@ -6,7 +6,36 @@ class Game {
     this.grid = grid,
     this.bombNumber = bombNumber,
     this.width = width,
-    this.playing = true
+    this.playing = true,
+    this.gameOver = function() {
+      console.log('game over')
+    },
+    this.clear = function(e) {
+      let cleared = []
+      const target = parseInt(e.target.dataset.index)
+      this.gridSquares = [...document.querySelectorAll('.grid-item')]
+      const mapped = this.gridSquares.map(el => parseInt(el.dataset.index))
+      const sweep = (target) => {
+
+        cleared = mapped.filter(el => (el === (target) || el === (target +1) || el === (target - 1) || el === (target + this.width) || el === (target - this.width) || el === (target + (this.width + 1)) || el === (target - (this.width + 1)) || el === (target + (this.width - 1)) || el === (target - (this.width - 1))))
+
+        cleared.map(el => document.querySelector(`[data-index="${el}"]`).classList.add('clear'))
+        cleared.map(el => sweep(el))
+
+      }
+
+
+
+
+
+
+
+      sweep(target)
+    }
+
+
+
+
 
 
     this.makeGrid = function() {
@@ -52,15 +81,12 @@ class Game {
     }
 
     this.placeNumbers(indexArray)
-    console.log(this.gridSquares)
-
-
 
   }
 
   placeNumbers(indexArray){
     console.log(indexArray)
-    const flagArray = indexArray.reduce((acc, el) => acc = acc.concat(el +1).concat(el - 1).concat(el + 9).concat(el - 9), []).filter(el => el > -1 && el < 81)
+    const flagArray = indexArray.reduce((acc, el) => acc = acc.concat(el +1).concat(el - 1).concat(el + this.width).concat(el - this.width).concat(el +(this.width + 1)).concat(el - (this.width + 1)).concat(el + (this.width - 1)).concat(el - (this.width - 1)), []).filter(el => el > -1 && el < (this.width * this.width))
 
     const flagOb = flagArray.reduce((acc, el) => {
       if(el in acc) {
@@ -75,8 +101,7 @@ class Game {
 
 
   loseFunc(e) {
-    console.log('you lose')
-    return e.target.classList.contains('bomb') ? this.playing = false : this.playing
+    e.target.classList.contains('bomb') ? mineSweeper.gameOver() : mineSweeper.clear(e)
 
   }
 
@@ -84,6 +109,11 @@ class Game {
     this.gridSquares = document.querySelectorAll('.grid-item')
     this.gridSquares.forEach(el => el.addEventListener('click', this.loseFunc))
   }
+
+
+
+
+
 
 }
 
@@ -107,10 +137,13 @@ const mineSweeper = new Game(1, [])
 
 
 const init = () =>{
+
   mineSweeper.setLevel()
   mineSweeper.makeGrid()
   mineSweeper.placeBombs()
   mineSweeper.addListener()
+
+
 
 
 
