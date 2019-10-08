@@ -22,7 +22,7 @@ body {
 
 div.grid {
   margin: 50px;
-  width: 360px;
+  width: 440px;
   height: 360px;
   display: flex;
   flex-wrap: wrap;
@@ -31,12 +31,18 @@ div.grid {
 div.grid-item {
   width: 40px;
   height: 40px;
-  background-color: grey;
+  background-color: red;
   border: 1px solid white;
 }
 
-div.bomb {
-  /* background-color: red; */
+div.grid-wall {
+  width: 40px;
+  height: 40px;
+opacity: 0;
+}
+
+div.safe {
+  background-color: grey;
 }
 
 div.clear {
