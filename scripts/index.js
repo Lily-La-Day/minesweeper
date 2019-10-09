@@ -16,43 +16,32 @@ class Game {
       this.gridSquares = [...document.querySelectorAll('.grid-item')]
       const mapped = this.gridSquares.map(el => parseInt(el.dataset.index))
       this.sweep(target, mapped)
-      // this.sweepRight(target, mapped)
-      // this.sweepUp(target)
-      // this.sweepDown(target)
-
-
     }
 
 
 
     this.sweep = function(target, mapped) {
-      console.log(mapped)
 
-      const clearedArray = mapped.filter(el => (el === target) || (el === target - 1) || (el === target - this.width - 1) && (el + 1 % this.width !== 0))
 
-      clearedArray.map(el => document.querySelector(`[data-index="${el}"]`).classList.contains('safe') ? document.querySelector(`[data-index="${el}"]`).classList.add('clear') : el )
+      const clearedArray = mapped.filter(el => (el === target) || (el === target - 1) || (el === target - 11 - 1) || (el === target + 1) || (el === target + 11 + 1) || (el === target + 11) || (el === target - 11))
 
-      clearedArray.every(cleared => cleared === 0 ? this.nextGo() : this.sweep(cleared, mapped))
+      clearedArray.map(el => document.querySelector(`[data-index="${el}"]`).classList.contains('safe') && !document.querySelector(`[data-index="${el}"]`).classList.contains('number')   ? document.querySelector(`[data-index="${el}"]`).classList.add('clear') : el )
+      console.log(clearedArray)
 
-      // const cleared = clearedArray.sort()[0]
-      // cleared % this.width === 0 ||  (cleared + 1) % this.width === 0 || cleared - 1 % this.width === 0  || cleared % this.width === 0 ? this.nextGo() : this.sweepLeft(cleared, mapped)
+      // for(let i = 0; i <= clearedArray.length; i ++ ) {
+      //   document.querySelector(`[data-index="${clearedArray[i]}"]`).classList.contains('grid-wall') ? this.nextGo() : this.sweep(clearedArray[i ],mapped )
+      // }
+      const nextArray = mapped.filter(el => (el === target) || (el === target - 1) || (el === target - 11 - 1) || (el === target + 1) || (el === target + 11 + 1) || (el === target + 11) || (el === target - 11) || (el === target + 11 - 1))
+
+      nextArray.every(cleared =>
+
+        document.querySelector(`[data-index="${cleared}"]`).classList.contains('grid-wall') || document.querySelector(`[data-index="${cleared}"]`).classList.contains('cleared') || document.querySelector(`[data-index="${cleared}"]`).classList.contains('number') ? console.log('working') : this.sweep(cleared,mapped ))
+
 
 
     }
-    // this.sweepRight = function(target, mapped) {
-    //
-    //
-    //   const clearedArray = mapped.filter(el => el === target || el === target + 1 || el === target + this.width + 1)
-    //
-    //
-    //   clearedArray.map(el => document.querySelector(`[data-index="${el}"]`).classList.contains('safe') ? document.querySelector(`[data-index="${el}"]`).classList.add('clear') : el )
-    //
-    //
-    //   clearedArray.map(cleared =>
-    //     cleared % this.width === 0 || cleared + 1 % this.width === 0 || cleared % this.width === 0 ? this.nextGo() : this.sweepRight(cleared, mapped))
-    //
-    //
-    // }
+
+
 
     this.makeGrid = function() {
       console.log(this.width)
@@ -61,20 +50,23 @@ class Game {
         const square = document.createElement('div')
 
         this.grid.append(square)
+        square.classList.add('grid-item')
         if(i > 11 && i < 109 && (i % 11 !== 0) && ((i + 1) % 11 !== 0)){
-          square.classList.add('grid-item')
+
           square.classList.add('safe')
+          square.dataset.index = i
 
           this.squares.push(this.square)
         } else {
           square.classList.add('grid-wall')
-          square.dataset.index = 0
+          square.dataset.index = i
+
         }
       }
 
       const safe = [...document.querySelectorAll('.safe')]
       for(let i = 0; i < safe.length; i ++ ) {
-        safe[i].dataset.index = i
+        safe[i].dataset.i = i
       }
 
 
@@ -85,7 +77,7 @@ class Game {
   }
 
   nextGo() {
-    console.log('nex go')
+    console.log('next go')
   }
 
   setLevel() {
@@ -112,7 +104,7 @@ class Game {
       const random = Math.floor(Math.random() * (this.width * this.width))
       console.log(random)
       indexArray.includes(random) ? indexArray : indexArray = indexArray.concat(random)
-      indexArray.map(el => document.querySelector(`[data-index="${el}"]`).classList.remove('safe'))
+      indexArray.map(el => document.querySelector(`[data-i="${el}"]`).classList.remove('safe'))
     }
 
     this.placeNumbers(indexArray)
@@ -135,7 +127,8 @@ class Game {
       }
       return acc
     }, {})
-    Object.keys(flagOb).map(el => document.querySelector(`[data-index="${el}"]`).innerText = `${flagOb[el]}`)
+    Object.keys(flagOb).map(el => document.querySelector(`[data-i="${el}"]`).innerText = `${flagOb[el]}`)
+    Object.keys(flagOb).map(el => document.querySelector(`[data-i="${el}"]`).classList.add('number'))
   }
 
 
@@ -192,45 +185,3 @@ const init = () =>{
 
 
 window.addEventListener('DOMContentLoaded', init)
-
-//
-// const sweep = (target) => {
-//
-//   cleared = mapped.filter(el => (el === (target) || el === (target +1 ) || el === (target - 1) || el === (target + this.width) || el === (target - this.width) || el === (target + (this.width + 1)) || el === (target - (this.width + 1)) || el === (target + (this.width - 1)) || el === (target - (this.width - 1))))
-//
-//   cleared.map(el => document.querySelector(`[data-index="${el}"]`).classList.add('clear'))
-//   cleared.map(el => sweep(el))
-//
-// }
-//
-// sweep(target)
-//
-// this.sweepLeft = function(target, mapped) {
-//   console.log(mapped)
-//
-//   const clearedArray = mapped.filter(el => (el === target) || (el === target - 1) || (el === target - this.width - 1))
-//
-//   clearedArray.map(el => document.querySelector(`[data-index="${el}"]`).classList.contains('safe') ? document.querySelector(`[data-index="${el}"]`).classList.add('clear') : el )
-//
-//   clearedArray.every(cleared =>
-//     cleared % this.width === 0 ||  cleared + 1 % this.width === 0 || cleared - 1 % this.width === 0  || cleared % this.width === 0 ? this.nextGo() : this.sweepLeft(cleared, mapped))
-
-// const cleared = clearedArray.sort()[0]
-// cleared % this.width === 0 ||  (cleared + 1) % this.width === 0 || cleared - 1 % this.width === 0  || cleared % this.width === 0 ? this.nextGo() : this.sweepLeft(cleared, mapped)
-
-
-// }
-// this.sweepRight = function(target, mapped) {
-//
-//
-//   const clearedArray = mapped.filter(el => el === target || el === target + 1 || el === target + this.width + 1)
-//
-//
-//   clearedArray.map(el => document.querySelector(`[data-index="${el}"]`).classList.contains('safe') ? document.querySelector(`[data-index="${el}"]`).classList.add('clear') : el )
-//
-//
-//   clearedArray.map(cleared =>
-//     cleared % this.width === 0 || cleared + 1 % this.width === 0 || cleared % this.width === 0 ? this.nextGo() : this.sweepRight(cleared, mapped))
-//
-//
-// }
